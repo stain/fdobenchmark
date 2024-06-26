@@ -30,12 +30,13 @@ public class HandleRecord implements FDORecord<HandlePID, byte[], byte[]> {
 	@Override
 	public Set<HandlePID> types() {
 		// TODO: Is this where we return the "profile" from index 1?
+		return Collections.emptySet();
 	}
 
 	@Override
 	public Set<MetadataRef<HandlePID>> metadata() {
 		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptySet();
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class HandleRecord implements FDORecord<HandlePID, byte[], byte[]> {
 	@Override
 	public Set<FDOAttribute<byte[], byte[]>> getAttributes() {
 		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptySet();
 	}
 
 }
