@@ -5,7 +5,13 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-public interface ContentType {
+/**
+ * The content type of a bitstream, typically an IANA media type,
+ * but other types are possible by having their own PIDs.
+ * 
+ * @see BitstreamRef
+ */
+public interface ContentType extends FDOContentType {
 	
 	public class IANAMediaType implements ContentType {
 
@@ -21,9 +27,14 @@ public interface ContentType {
 		}
 		@Override
 		public Optional<PID> pid() {
+			// These are not ideal as they don't all resolve, but other PURLs
+			// for media types unfortunately seem to break over time, see
+			// https://github.com/nicholascar/mediatypes-service/issues/2
 			return Optional.of(new PID.URIPID(IANA.resolve(mediaType)));
 		}
 	}
+	
+	
 		
 	static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
 	static final IANAMediaType UNKNOWN_TYPE = new IANAMediaType(APPLICATION_OCTET_STREAM);

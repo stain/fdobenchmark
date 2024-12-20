@@ -3,10 +3,9 @@ package org.fairdo.benchmark.handle;
 import java.util.Collections;
 import java.util.Set;
 
-import org.fairdo.benchmark.api.BitstreamRef;
 import org.fairdo.benchmark.api.FDOAttribute;
+import org.fairdo.benchmark.api.FDOAttributes;
 import org.fairdo.benchmark.api.FDORecord;
-import org.fairdo.benchmark.api.MetadataRef;
 
 public class HandleRecord implements FDORecord<HandlePID, byte[], byte[]> {
 
@@ -28,26 +27,12 @@ public class HandleRecord implements FDORecord<HandlePID, byte[], byte[]> {
 	}
 
 	@Override
-	public Set<HandlePID> types() {
-		// TODO: Is this where we return the "profile" from index 1?
-		return Collections.emptySet();
+	public FDOAttributes<HandlePID> mandatoryAttributes() {
+		return new HandleAttributes(pid);
 	}
 
 	@Override
-	public Set<MetadataRef<HandlePID>> metadata() {
-		// TODO Auto-generated method stub
-		return Collections.emptySet();
-	}
-
-	@Override
-	public Set<BitstreamRef> bitstreams() {
-		// TODO: Check with resolver if there are multiple
-		return Collections.singleton(new HandleResolverStream(pid));
-	}
-
-	@Override
-	public Set<FDOAttribute<byte[], byte[]>> getAttributes() {
-		// TODO Auto-generated method stub
+	public Set<FDOAttribute<byte[], byte[]>> optionalAttributes() {
 		return Collections.emptySet();
 	}
 

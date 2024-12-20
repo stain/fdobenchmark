@@ -7,7 +7,6 @@ import java.util.Optional;
 
 public interface BitstreamRef {
 	InputStream asInputStream() throws IOException;
-	Optional<URI> asURI() throws IOException;
-	ContentType contentType() throws IOException; 
-	
+	Optional<URI> asURI();
+	ContentType contentType(); 
 }
