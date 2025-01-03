@@ -40,7 +40,7 @@ public class HttpBitstreamRef implements BitstreamRef {
 	}
 
 	@Override
-	public Optional<URI> asURI() throws IOException {
+	public Optional<URI> asURI() {
 		HttpRequest req = HttpRequest.newBuilder().uri(pid.asURI()).HEAD().build();
 		try {
 			HttpResponse<InputStream> resp = HttpClient.newBuilder().followRedirects(Redirect.ALWAYS).build().send(req,
@@ -51,13 +51,13 @@ public class HttpBitstreamRef implements BitstreamRef {
 				// PID did not resolve/redirect correctly
 				return Optional.empty();
 			}
-		} catch (InterruptedException e) {
-			throw new IOException(e);
+		} catch (InterruptedException|IOException e ) {
+			return Optional.empty();
 		}
 	}
 
 	@Override
-	public ContentType contentType() throws IOException {
+	public ContentType contentType() {
 		HttpRequest req = HttpRequest.newBuilder().uri(pid.asURI()).HEAD().build();
 		try {
 			HttpResponse<Void> resp = HttpClient.newBuilder().followRedirects(Redirect.ALWAYS).build().send(req,
@@ -70,8 +70,8 @@ public class HttpBitstreamRef implements BitstreamRef {
 			Optional<String> loc = resp.headers().firstValue("Content-Type");
 			// FIXME: This should strip away any parameters like ;charset
 			return loc.map(IANAMediaType::new).orElse(ContentType.UNKNOWN_TYPE);
-		} catch (InterruptedException e) {
-			throw new IOException(e);
+		} catch (InterruptedException|IOException e) {
+			return ContentType.UNKNOWN_TYPE;
 		}
 	}
 

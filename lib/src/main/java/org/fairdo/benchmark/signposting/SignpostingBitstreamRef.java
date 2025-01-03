@@ -9,6 +9,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.fairdo.benchmark.api.BitstreamRef;
@@ -23,7 +24,7 @@ public class SignpostingBitstreamRef implements BitstreamRef {
 	private ContentType contentType;
 
 	public SignpostingBitstreamRef(URIPID pid, ContentType contentType) {
-		this.pid = pid;
+		this.pid = Objects.requireNonNull(pid);
 	}
 
 	@Override
@@ -51,12 +52,12 @@ public class SignpostingBitstreamRef implements BitstreamRef {
 	}
 
 	@Override
-	public Optional<URI> asURI() throws IOException {
+	public Optional<URI> asURI() {
 		return Optional.of(pid.asURI());
 	}
 
 	@Override
-	public ContentType contentType() throws IOException {
+	public ContentType contentType() {
 		return contentType;
 	}
 

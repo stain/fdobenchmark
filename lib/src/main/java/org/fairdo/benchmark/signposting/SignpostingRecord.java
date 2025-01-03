@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.fairdo.benchmark.api.BitstreamRef;
 import org.fairdo.benchmark.api.FDOAttribute;
+import org.fairdo.benchmark.api.FDOAttributes;
 import org.fairdo.benchmark.api.FDORecord;
 import org.fairdo.benchmark.api.MetadataRef;
 import org.fairdo.benchmark.api.PID;
@@ -22,30 +23,20 @@ public class SignpostingRecord implements FDORecord<PID.URIPID, String, String>{
 		return pid;
 	}
 
-	@Override
-	public Set<URIPID> types() {
-		return Collections.emptySet();
-	}
-
-	@Override
-	public Set<MetadataRef<URIPID>> metadata() {
-		return Collections.emptySet();
-	}
-
-	@Override
-	public Set<BitstreamRef> bitstreams() {
-		return Collections.emptySet();
-
-	}
-
-	@Override
-	public Set<FDOAttribute<String, String>> getAttributes() {
-		return Collections.emptySet();
-	}
 
 	@Override
 	public URIPID pidProfile() {
 		return FAIR_PROFILE;
+	}
+
+	@Override
+	public FDOAttributes<URIPID> mandatoryAttributes() {
+		return new SignpostingFDOAttributes();
+	}
+
+	@Override
+	public Set<FDOAttribute<String, String>> optionalAttributes() {
+		return Collections.emptySet();
 	}
 
 }

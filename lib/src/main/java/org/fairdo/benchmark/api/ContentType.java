@@ -33,8 +33,6 @@ public interface ContentType extends FDOContentType {
 			return Optional.of(new PID.URIPID(IANA.resolve(mediaType)));
 		}
 	}
-	
-	
 		
 	static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
 	static final IANAMediaType UNKNOWN_TYPE = new IANAMediaType(APPLICATION_OCTET_STREAM);
