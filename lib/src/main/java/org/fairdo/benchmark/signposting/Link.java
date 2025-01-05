@@ -27,9 +27,6 @@ package org.fairdo.benchmark.signposting;
 
 import java.net.URI;
 import java.util.Objects;
-
-import javax.annotation.Nullable;
-
 import org.fairdo.benchmark.signposting.LinkRelation.IanaLinkRelations;
 
 /**
@@ -58,8 +55,8 @@ public class Link {
 		this.rel = rel;
 	}
 
-	Link(LinkRelation rel, String href, @Nullable String hreflang, @Nullable String media, @Nullable String title,
-			@Nullable String type, @Nullable String profile, @Nullable String name) {
+	Link(LinkRelation rel, String href, String hreflang, String media, String title,
+			 String type, String profile, String name) {
 
 		this.rel = rel;
 		this.href = href;
@@ -212,7 +209,7 @@ public class Link {
 	 * @param hreflang can be {@literal null}
 	 * @return will never be {@literal null}.
 	 */
-	public Link withHreflang(@Nullable String hreflang) {
+	public Link withHreflang( String hreflang) {
 
 		return this.hreflang == hreflang ? this
 				: new Link(this.rel, this.href, hreflang, this.media, this.title, this.type, this.profile, this.name);
@@ -225,7 +222,7 @@ public class Link {
 	 * @param media can be {@literal null}
 	 * @return will never be {@literal null}.
 	 */
-	public Link withMedia(@Nullable String media) {
+	public Link withMedia( String media) {
 
 		return this.media == media ? this
 				: new Link(this.rel, this.href, this.hreflang, media, this.title, this.type, this.profile, this.name);
@@ -238,7 +235,7 @@ public class Link {
 	 * @param title can be {@literal null}
 	 * @return will never be {@literal null}.
 	 */
-	public Link withTitle(@Nullable String title) {
+	public Link withTitle( String title) {
 
 		return this.title == title ? this
 				: new Link(this.rel, this.href, this.hreflang, this.media, title, this.type, this.profile, this.name);
@@ -251,7 +248,7 @@ public class Link {
 	 * @param type can be {@literal null}
 	 * @return will never be {@literal null}.
 	 */
-	public Link withType(@Nullable String type) {
+	public Link withType( String type) {
 
 		return this.type == type ? this
 				: new Link(this.rel, this.href, this.hreflang, this.media, this.title, type, this.profile, this.name);
@@ -264,7 +261,7 @@ public class Link {
 	 * @param profile can be {@literal null}
 	 * @return will never be {@literal null}.
 	 */
-	public Link withProfile(@Nullable String profile) {
+	public Link withProfile( String profile) {
 
 		return this.profile == profile ? this
 				: new Link(this.rel, this.href, this.hreflang, this.media, this.title, this.type, profile, this.name);
@@ -277,7 +274,7 @@ public class Link {
 	 * @param name can be {@literal null}
 	 * @return will never be {@literal null}.
 	 */
-	public Link withName(@Nullable String name) {
+	public Link withName( String name) {
 
 		return this.name == name ? this
 				: new Link(this.rel, this.href, this.hreflang, this.media, this.title, this.type, this.profile, name);
@@ -291,36 +288,36 @@ public class Link {
 		return this.href;
 	}
 
-	@Nullable
+	
 
 	public String getHreflang() {
 		return this.hreflang;
 	}
 
-	@Nullable
+	
 
 	public String getMedia() {
 		return this.media;
 	}
 
-	@Nullable
+	
 
 	public String getTitle() {
 		return this.title;
 	}
 
-	@Nullable
+	
 
 	public String getType() {
 		return this.type;
 	}
 
-	@Nullable
+	
 	public String getProfile() {
 		return this.profile;
 	}
 
-	@Nullable
+	
 
 	public String getName() {
 		return this.name;
@@ -332,7 +329,7 @@ public class Link {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(@Nullable Object o) {
+	public boolean equals(Object o) {
 
 		if (this == o) {
 			return true;

@@ -36,8 +36,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.annotation.Nullable;
-
 /**
  * Interface for defining link relations. Can be used for implementing
  * spec-based link relations as well as custom ones.
@@ -1499,7 +1497,7 @@ public interface LinkRelation {
 		 * @see java.lang.Object#equals(java.lang.Object)
 		 */
 		@Override
-		public boolean equals(@Nullable Object o) {
+		public boolean equals(Object o) {
 
 			if (this == o) {
 				return true;
