@@ -14,7 +14,6 @@ import java.util.Optional;
 
 import org.fairdo.benchmark.api.BitstreamRef;
 import org.fairdo.benchmark.api.ContentType;
-import org.fairdo.benchmark.api.ContentType.IANAMediaType;
 import org.fairdo.benchmark.api.PID;
 import org.fairdo.benchmark.api.PID.URIPID;
 
@@ -45,7 +44,7 @@ public class SignpostingBitstreamRef implements BitstreamRef {
 		try {
 			HttpResponse<InputStream> resp = HttpClient.newBuilder().followRedirects(Redirect.ALWAYS).build().send(req,
 					BodyHandlers.ofInputStream());
-			return resp.body();
+			return resp.body();	
 		} catch (InterruptedException e) {
 			throw new IOException(e);
 		}		

@@ -2,7 +2,7 @@ package org.fairdo.benchmark.api;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Optional;
+import java.util.Objects;
 
 public interface PID {
 	
@@ -14,7 +14,7 @@ public interface PID {
 	public final class URIPID extends AbstractPID { 
 		
 		public URIPID(URI uri) {
-			this.uri = uri;
+			this.uri = Objects.requireNonNull(uri);
 		}		
 		
 		public URIPID(String string) throws URISyntaxException {
@@ -25,10 +25,10 @@ public interface PID {
 			if (pid instanceof URIPID) { 
 				return (URIPID)pid;
 			}
-			return new URIPID(Optional.of(pid.asURI()).get());
+			return new URIPID(pid.asURI());
 		}
 		
-		private URI uri;
+		private final URI uri;
 
 		@Override
 		public URI asURI() {

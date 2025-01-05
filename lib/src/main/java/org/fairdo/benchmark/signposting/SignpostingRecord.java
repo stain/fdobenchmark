@@ -1,14 +1,13 @@
 package org.fairdo.benchmark.signposting;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Set;
 
-import org.fairdo.benchmark.api.BitstreamRef;
 import org.fairdo.benchmark.api.FDOAttribute;
 import org.fairdo.benchmark.api.FDOAttributes;
 import org.fairdo.benchmark.api.FDORecord;
-import org.fairdo.benchmark.api.MetadataRef;
 import org.fairdo.benchmark.api.PID;
 import org.fairdo.benchmark.api.PID.URIPID;
 
@@ -23,7 +22,6 @@ public class SignpostingRecord implements FDORecord<PID.URIPID, String, String>{
 		return pid;
 	}
 
-
 	@Override
 	public URIPID pidProfile() {
 		return FAIR_PROFILE;
@@ -31,7 +29,12 @@ public class SignpostingRecord implements FDORecord<PID.URIPID, String, String>{
 
 	@Override
 	public FDOAttributes<URIPID> mandatoryAttributes() {
-		return new SignpostingFDOAttributes();
+		try {
+			return new SignpostingFDOAttributes(pid);
+		} catch (IOException e) {
+			e.printStackTrace();			
+			return null;
+		}
 	}
 
 	@Override

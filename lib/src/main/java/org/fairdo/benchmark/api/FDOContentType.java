@@ -1,5 +1,7 @@
 package org.fairdo.benchmark.api;
 
+import java.util.Optional;
+
 /**
  * 
  * FIXME: Unclear if "FDO-Content-Type" is separate from {@link ContentType}
@@ -8,4 +10,7 @@ package org.fairdo.benchmark.api;
  */
 public interface FDOContentType {
 
+	default Optional<PID> pid() { 
+		return Optional.empty();
+	}
 }
