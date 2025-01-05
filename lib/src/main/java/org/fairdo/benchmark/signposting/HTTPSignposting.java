@@ -10,47 +10,56 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.fairdo.benchmark.signposting.LinkRelation.IanaLinkRelations;
 
 public class HTTPSignposting implements Signposting {
 
-	private List<String> headers;
+	private Set<Link> links;
 
 	public HTTPSignposting(URI uri) throws IOException {
-		this.headers = findHeaders(uri).allValues("Link");
-		// TODO: Parse Link headers
-	}
-	
-	@Override
-	public String toString() {
-		return headers.toString();
+		List<String> headers = findHeaders(uri).allValues("Link");
+		this.links = findLinks(headers);
 	}
 
-	private HttpHeaders findHeaders(URI uri) throws IOException {
-		HttpRequest req  = HttpRequest.newBuilder().uri(uri).
-				// 	Browser-like request for landing page (from Firefox)			
-				header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8").
-				HEAD().build();	
+	private static Set<Link> findLinks(List<String> headers) {
+		return headers.stream().flatMap(e -> LinkParser.parseLinks(e)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public String toString() {
+		return links.toString();
+	}
+
+	private static HttpHeaders findHeaders(URI uri) throws IOException {
+		HttpRequest req = HttpRequest.newBuilder().uri(uri).
+		// Browser-like request for landing page (from Firefox)
+				header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8").HEAD().build();
 		try {
 			HttpResponse<Void> resp = HttpClient.newBuilder()
 					// Follow any PID redirects
-					.followRedirects(Redirect.ALWAYS).build().send(req,
-							BodyHandlers.discarding());
-			return resp.headers();	
+					.followRedirects(Redirect.ALWAYS).build().send(req, BodyHandlers.discarding());
+			return resp.headers();
 		} catch (InterruptedException e) {
 			throw new IOException(e);
-		}					
+		}
 	}
 
 	@Override
 	public Set<URI> getTypes() {
-		// TODO Auto-generated method stub
-		return null;
+		return links.stream()
+				.filter(e -> e.getRel().equals(IanaLinkRelations.TYPE))
+				.map(l -> URI.create(l.getHref()))
+				.collect(Collectors.toSet());
 	}
 
 	@Override
 	public Set<URI> getProfiles() {
-		// TODO Auto-generated method stub
-		return null;
+		return links.stream()
+				.filter(e -> e.getRel().equals(IanaLinkRelations.PROFILE))
+				.map(l -> URI.create(l.getHref()))
+				.collect(Collectors.toSet());
 	}
 
 }

@@ -24,8 +24,8 @@ package org.fairdo.benchmark.signposting;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * A parser to turn RFC-8288 compliant strings into {@link Link} instances.
@@ -41,7 +41,7 @@ class LinkParser {
 	 * @param source must not be {@literal null}.
 	 * @return will never be {@literal null}.
 	 */
-	public static List<Link> parseLinks(String source) {
+	public static Stream<Link> parseLinks(String source) {
 		Objects.requireNonNull(source);
 
 		var links = new ArrayList<Link>();
@@ -113,7 +113,7 @@ class LinkParser {
 			throw new IllegalArgumentException("Unexpected data at the end of Link header at index " + pos[0]);
 		}
 
-		return links;
+		return links.stream();
 	}
 
 	/**
