@@ -27,6 +27,11 @@ public class SignpostingBitstreamRef implements BitstreamRef {
 
 	public SignpostingBitstreamRef(URIPID pid, ContentType contentType) {
 		this.pid = Objects.requireNonNull(pid);
+		if (contentType == null) { 
+			this.contentType = ContentType.UNKNOWN_TYPE;
+		} else { 
+			this.contentType = contentType;
+		}
 	}
 
 	@Override

@@ -12,8 +12,10 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -21,6 +23,7 @@ import javax.net.ssl.SSLContext;
 import org.fairdo.benchmark.api.BitstreamRef;
 import org.fairdo.benchmark.api.ContentType;
 import org.fairdo.benchmark.api.ContentType.IANAMediaType;
+import org.fairdo.benchmark.api.PID;
 import org.fairdo.benchmark.api.PID.URIPID;
 import org.fairdo.benchmark.signposting.LinkRelation.IanaLinkRelations;
 
@@ -97,6 +100,14 @@ public class HTTPSignposting implements Signposting {
 		return links.stream()
 		.filter(e -> e.getRel().equals(IanaLinkRelations.ITEM))
 		.map(this::asBitstreamRef).collect(Collectors.toSet());
+	}
+
+	public Optional<URIPID> getCiteAs() {
+		return links.stream()
+				.filter(e -> e.getRel().equals(IanaLinkRelations.CITE_AS))
+				.map(Link::getHref)
+				.map(URI::create)
+				.map(URIPID::new).findAny();		
 	}
 	
 	

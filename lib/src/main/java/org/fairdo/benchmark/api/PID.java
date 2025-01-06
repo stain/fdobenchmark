@@ -47,7 +47,7 @@ public interface PID {
 		
 		@Override
 		public String toString() {
-			return "<" + asString() + ">";
+			return asString();
 		}
 	}
 	

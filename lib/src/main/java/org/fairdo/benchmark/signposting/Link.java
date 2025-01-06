@@ -292,36 +292,36 @@ public class Link {
 	
 
 	public Optional<String> getHreflang() {
-		return Optional.of(hreflang);
+		return Optional.ofNullable(hreflang);
 	}
 
 	
 
 	public Optional<String> getMedia() {
-		return Optional.of(this.media);
+		return Optional.ofNullable(this.media);
 	}
 
 	
 
 	public Optional<String> getTitle() {
-		return Optional.of(this.title);
+		return Optional.ofNullable(this.title);
 	}
 
 	
 
 	public Optional<String> getType() {
-		return Optional.of(this.type);
+		return Optional.ofNullable(this.type);
 	}
 
 	
 	public Optional<String> getProfile() {
-		return Optional.of(this.profile);
+		return Optional.ofNullable(this.profile);
 	}
 
 	
 
 	public Optional<String> getName() {
-		return Optional.of(this.name);
+		return Optional.ofNullable(this.name);
 	}
 
 	/*
