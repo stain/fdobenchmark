@@ -9,8 +9,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 import java.util.Optional;
+
+import javax.net.ssl.SSLContext;
 
 import org.fairdo.benchmark.api.BitstreamRef;
 import org.fairdo.benchmark.api.ContentType;
@@ -42,7 +45,8 @@ public class SignpostingBitstreamRef implements BitstreamRef {
 		
 		HttpRequest req = builder.build(); 
 		try {
-			HttpResponse<InputStream> resp = HttpClient.newBuilder().followRedirects(Redirect.ALWAYS).build().send(req,
+			HttpResponse<InputStream> resp = HttpClient.newBuilder().followRedirects(Redirect.ALWAYS).
+					build().send(req,
 					BodyHandlers.ofInputStream());
 			return resp.body();	
 		} catch (InterruptedException e) {

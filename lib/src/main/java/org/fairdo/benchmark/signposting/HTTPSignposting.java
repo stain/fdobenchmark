@@ -8,10 +8,20 @@ import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+
+import org.fairdo.benchmark.api.BitstreamRef;
+import org.fairdo.benchmark.api.ContentType;
+import org.fairdo.benchmark.api.ContentType.IANAMediaType;
+import org.fairdo.benchmark.api.PID.URIPID;
 import org.fairdo.benchmark.signposting.LinkRelation.IanaLinkRelations;
 
 public class HTTPSignposting implements Signposting {
@@ -61,5 +71,34 @@ public class HTTPSignposting implements Signposting {
 				.map(l -> URI.create(l.getHref()))
 				.collect(Collectors.toSet());
 	}
+
+	@Override
+	public Set<BitstreamRef> getMetadata() {
+		return links.stream()
+		.filter(e -> e.getRel().equals(IanaLinkRelations.DESCRIBED_BY))
+		.map(this::asBitstreamRef).collect(Collectors.toSet());
+	}
+
+	private BitstreamRef asBitstreamRef(Link l) {
+		return new SignpostingBitstreamRef(new URIPID(URI.create(l.getHref())), 
+				asContentType(l));
+	}
+
+	private ContentType asContentType(Link l) {
+		String type = l.getType().orElse(IANAMediaType.APPLICATION_OCTET_STREAM);		
+		Set<String> profiles = l.getProfile().stream()
+				.flatMap(s-> Arrays.asList(s.split(" +")).stream())
+				.collect(Collectors.toSet());
+		return new MediaTypeWithProfile(type, profiles);
+	}
+
+	@Override
+	public Set<BitstreamRef> getData() {
+		return links.stream()
+		.filter(e -> e.getRel().equals(IanaLinkRelations.ITEM))
+		.map(this::asBitstreamRef).collect(Collectors.toSet());
+	}
+	
+	
 
 }

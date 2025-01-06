@@ -27,6 +27,8 @@ package org.fairdo.benchmark.signposting;
 
 import java.net.URI;
 import java.util.Objects;
+import java.util.Optional;
+
 import org.fairdo.benchmark.signposting.LinkRelation.IanaLinkRelations;
 
 /**
@@ -41,8 +43,9 @@ import org.fairdo.benchmark.signposting.LinkRelation.IanaLinkRelations;
 public class Link {
 
 	private String href;
-	private String hreflang, media, title, type, profile, name;
 	private LinkRelation rel;
+	// Optionals
+	private String hreflang, media, title, type, profile, name;
 
 	/**
 	 * Creates a new {@link Link} to the given URI with the given rel.
@@ -51,15 +54,15 @@ public class Link {
 	 * @param rel  must not be {@literal null} or empty.
 	 */
 	protected Link(String href, LinkRelation rel) {
-		this.href = href;
-		this.rel = rel;
+		this.href = Objects.requireNonNull(href);
+		this.rel = Objects.requireNonNull(rel);
 	}
 
 	Link(LinkRelation rel, String href, String hreflang, String media, String title,
 			 String type, String profile, String name) {
 
-		this.rel = rel;
-		this.href = href;
+		this.rel = Objects.requireNonNull(rel);
+		this.href = Objects.requireNonNull(href);
 		this.hreflang = hreflang;
 		this.media = media;
 		this.title = title;
@@ -168,8 +171,6 @@ public class Link {
 	 * will fail with an {@link IllegalStateException}.
 	 *
 	 * @return will never be {@literal null}.
-	 * @throws IllegalStateException in case the href contains mandatory URI
-	 *                               {@link TemplateVariable}s.
 	 */
 	public URI toUri() {
 		return URI.create(href);
@@ -290,37 +291,37 @@ public class Link {
 
 	
 
-	public String getHreflang() {
-		return this.hreflang;
+	public Optional<String> getHreflang() {
+		return Optional.of(hreflang);
 	}
 
 	
 
-	public String getMedia() {
-		return this.media;
+	public Optional<String> getMedia() {
+		return Optional.of(this.media);
 	}
 
 	
 
-	public String getTitle() {
-		return this.title;
+	public Optional<String> getTitle() {
+		return Optional.of(this.title);
 	}
 
 	
 
-	public String getType() {
-		return this.type;
+	public Optional<String> getType() {
+		return Optional.of(this.type);
 	}
 
 	
-	public String getProfile() {
-		return this.profile;
+	public Optional<String> getProfile() {
+		return Optional.of(this.profile);
 	}
 
 	
 
-	public String getName() {
-		return this.name;
+	public Optional<String> getName() {
+		return Optional.of(this.name);
 	}
 
 	/*
