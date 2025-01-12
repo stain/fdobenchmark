@@ -28,7 +28,7 @@ public class LinkParserTest {
 	void links() throws IOException { 
 		HTTPSignposting signposting = new HTTPSignposting(WF_1062_2);
 		System.out.println(signposting);
-		assertEquals(WF_1062_2, signposting.getCiteAs().get().asURI());
+		assertEquals(WF_1062_2, signposting.getCiteAs().get());
 		BitstreamRef data = signposting.getData().stream().findAny().get();
 		assertEquals(URI.create("https://workflowhub.eu/workflows/1063/ro_crate?version=2"), 
 				data.asURI().get());
@@ -41,6 +41,5 @@ public class LinkParserTest {
 		
 		Optional<BitstreamRef> metadata2 = signposting.getMetadata().stream().filter(m -> m.contentType().mediaType().equals("application/ld+json")).findAny();
 		assertEquals("https://workflowhub.eu/workflows/1063?version=2", metadata2.get().asURI().get().toString());
-		
 	}
 }

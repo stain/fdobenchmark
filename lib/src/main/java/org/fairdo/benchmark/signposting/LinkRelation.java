@@ -23,6 +23,8 @@
  * - LINK_RELATIONS static Set rather than built using reflection
  * - Reformatting
  * - Removed @since javadoc
+ * - IanaLinkRelation.parse fall back to StringRelation
+ * - Added IanaLinkRelation.of and .manyOf
  */
 package org.fairdo.benchmark.signposting;
 
@@ -34,7 +36,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Interface for defining link relations. Can be used for implementing
@@ -42,6 +44,7 @@ import java.util.stream.Collectors;
  *
  * @author Greg Turnquist
  * @author Oliver Drotbohm
+ * @author Stian Soiland-Reyes
  */
 public interface LinkRelation {
 
@@ -61,17 +64,15 @@ public interface LinkRelation {
 	}
 
 	/**
-	 * Creates a new {@link Iterable} of {@link LinkRelation} for each of the given
+	 * Creates a new {@link Stream} of {@link LinkRelation} for each of the given
 	 * {@link String}s.
 	 *
 	 * @param others must not be {@literal null}.
 	 * @return
 	 */
-	static Iterable<LinkRelation> manyOf(String... others) {
-
+	static Stream<LinkRelation> manyOf(String... others) {
 		return Arrays.stream(others) //
-				.map(LinkRelation::of) //
-				.collect(Collectors.toList());
+				.map(LinkRelation::of);
 	}
 
 	/**
@@ -1419,18 +1420,33 @@ public interface LinkRelation {
 
 		/**
 		 * Convert a string-based link relation to a {@link IanaLinkRelations}. Per
-		 * RFC8288, parsing of link relations is case insensitive.
+		 * RFC8288, parsing of link relations is case insensitive. The fallback for unmatched relations 
+		 * will be a StringLinkRelation rather than throwing an exception. 
 		 *
 		 * @param relation as a string
 		 * @return the link relation as a {@link LinkRelation}
 		 */
 		public static LinkRelation parse(String relation) {
-
 			return LINK_RELATIONS.stream() //
 					.filter(it -> it.value().equalsIgnoreCase(relation)) //
 					.findFirst() //
-					.orElseThrow(() -> new IllegalArgumentException(relation + " is not a valid IANA link relation!"));
+					.orElse(new StringLinkRelation(relation));					
 		}
+
+		/**
+		 * Creates a new {@link Stream} of {@link LinkRelation} for each of the given
+		 * {@link String}s.
+		 *
+		 * @param others must not be {@literal null}.
+		 * @return
+		 */
+		static Stream<LinkRelation> manyOf(String... others) {
+			return Arrays.stream(others) //
+					.map(IanaLinkRelations::parse);
+		}
+		
+		
+		
 	}
 
 	/**
