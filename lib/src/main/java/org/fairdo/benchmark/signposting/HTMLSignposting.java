@@ -8,7 +8,6 @@ import java.net.http.HttpClient.Redirect;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +28,7 @@ import org.fairdo.benchmark.signposting.LinkRelation.IanaLinkRelations;
 
 public class HTMLSignposting extends AbstractSignposting {
 
-	static final class ParserCallbackExtension extends ParserCallback {
+	static class ParserCallbackExtension extends ParserCallback {
 		private final AtomicBoolean finished;
 		private final List<MutableAttributeSet> linkAttrs;
 
@@ -63,6 +62,11 @@ public class HTMLSignposting extends AbstractSignposting {
 		}
 	}
 
+	/**
+	 * 
+	 * @see https://chatgpt.com/share/67843c0f-c55c-8012-b523-59e0ffc9bd47
+	 * @author ChatGPT 
+	 */
 	static class StreamReader extends Reader {
 		private final Iterator<String> lineIterator;
 		private String currentLine;
@@ -133,7 +137,8 @@ public class HTMLSignposting extends AbstractSignposting {
 	private static Set<Link> findLinks(URI uri) throws IOException {
 		HttpRequest req = HttpRequest.newBuilder().uri(uri).
 		// Browser-like request for landing page (from Firefox)
-				header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8").GET().build();
+				header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8").
+				GET().build();
 
 		final AtomicBoolean mayFinishNow = new AtomicBoolean();
 		try {

@@ -9,9 +9,9 @@ import org.fairdo.benchmark.api.PID.AbstractPID;
 
 public final class HandlePID extends AbstractPID {
 
-	private URI NAMESPACE = URI.create("http://hdl.handle.net/");
+	private static URI NAMESPACE = URI.create("http://hdl.handle.net/");
 
-	private PID RFC3651 = new HandlePID("10.17487/RFC3651");
+	private static PID RFC3651 = new HandlePID("10.17487/RFC3651");
 	
 	private String handle;
 	

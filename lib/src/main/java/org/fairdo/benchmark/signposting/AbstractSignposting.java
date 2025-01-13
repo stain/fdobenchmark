@@ -12,11 +12,11 @@ import org.fairdo.benchmark.api.ContentType.IANAMediaType;
 import org.fairdo.benchmark.api.PID.URIPID;
 import org.fairdo.benchmark.signposting.LinkRelation.IanaLinkRelations;
 
-public class AbstractSignposting implements Signposting {
+class AbstractSignposting implements Signposting {
 
 	private Set<Link> links;
 
-	public AbstractSignposting(Set<Link> links) {
+	AbstractSignposting(Set<Link> links) {
 		this.links = links;
 	}
 
@@ -48,19 +48,6 @@ public class AbstractSignposting implements Signposting {
 		.map(this::asBitstreamRef).collect(Collectors.toSet());
 	}
 
-	private BitstreamRef asBitstreamRef(Link l) {
-		return new SignpostingBitstreamRef(new URIPID(URI.create(l.getHref())), 
-				asContentType(l));
-	}
-
-	private ContentType asContentType(Link l) {
-		String type = l.getType().orElse(IANAMediaType.APPLICATION_OCTET_STREAM);		
-		Set<String> profiles = l.getProfile().stream()
-				.flatMap(s-> Arrays.asList(s.split(" +")).stream())
-				.collect(Collectors.toSet());
-		return new MediaTypeWithProfile(type, profiles);
-	}
-
 	@Override
 	public Set<BitstreamRef> getData() {
 		return links.stream()
@@ -76,4 +63,18 @@ public class AbstractSignposting implements Signposting {
 				//.map(URIPID::new)
 				.findAny();
 	}
+	
+	private BitstreamRef asBitstreamRef(Link l) {
+		return new SignpostingBitstreamRef(new URIPID(URI.create(l.getHref())), 
+				asContentType(l));
+	}
+
+	private ContentType asContentType(Link l) {
+		String type = l.getType().orElse(IANAMediaType.APPLICATION_OCTET_STREAM);		
+		Set<String> profiles = l.getProfile().stream()
+				.flatMap(s-> Arrays.asList(s.split(" +")).stream())
+				.collect(Collectors.toSet());
+		return new MediaTypeWithProfile(type, profiles);
+	}	
+	
 }

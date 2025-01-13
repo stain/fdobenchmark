@@ -70,5 +70,10 @@ public class HandleStreamReference implements FDOReference<HandlePID, BitstreamR
 	public BitstreamRef resolve() throws IOException {
 		return new HandleResolverStream(pid, findURI(), findContentType());
 	}
+	
+	@Override
+	public String toString() {
+		return "HandleStreamReference <" + pid + ">";
+	}
 
 }
